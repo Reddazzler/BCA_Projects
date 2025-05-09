@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: auto;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Module</h1>
+        <p id="questionText"></p>
+        <form id="quizForm">
+            <div id="options"></div>
+            <button type="button" id="submitBtn">Submit</button>
+            <p id="feedback"></p>
+            <button type="button" id="nextBtn" class="hidden">Next Question</button>
+        </form>
+        <p id="scoreDisplay"></p>
+        <button id="restartBtn" class="hidden">Restart Quiz</button>
+    </div>
+
+    <script>
+        const questions = [
+            { 
+                title: "What is the capital of France?", 
+                options: ["Berlin", "Madrid", "Paris", "Rome"], 
+                correct: "Paris", 
+                score: 10 
+            },
+            { 
+                title: "Which programming language is used for web styling?", 
+                options: ["Java", "CSS", "Python", "C++"], 
+                correct: "CSS", 
+                score: 10 
+            },
+            { 
+                title: "What does SQL stand for?", 
+                options: ["Structured Query Language", "Simple Query Lookup", "Server Query Logic", "Software Query Layer"], 
+                correct: "Structured Query Language", 
+                score: 15 
+            },
+            { 
+                title: "Which HTML tag is used to create a hyperlink?", 
+                options: ["<link>", "<href>", "<a>", "<url>"], 
+                correct: "<a>", 
+                score: 10 
+            },
+            { 
+                title: "What is the output of 5 + '5' in JavaScript?", 
+                options: ["10", "55", "Error", "Undefined"], 
+                correct: "55", 
+                score: 10 
+            },
+            { 
+                title: "Which CSS property is used to change text color?", 
+                options: ["font-color", "text-style", "color", "background-color"], 
+                correct: "color", 
+                score: 10 
+            },
+            { 
+                title: "Which data structure follows LIFO principle?", 
+                options: ["Queue", "Stack", "Linked List", "Array"], 
+                correct: "Stack", 
+                score: 15 
+            },
+            { 
+                title: "Which JavaScript method is used to print in console?", 
+                options: ["console.print()", "log()", "console.log()", "write.console()"], 
+                correct: "console.log()", 
+                score: 10 
+            },
+            { 
+                title: "Which tag is used to define JavaScript in HTML?", 
+                options: ["<js>", "<script>", "<java>", "<style>"], 
+                correct: "<script>", 
+                score: 10 
+            },
+            { 
+                title: "Which SQL statement is used to retrieve data?", 
+                options: ["SELECT", "UPDATE", "DELETE", "INSERT"], 
+                correct: "SELECT", 
+                score: 10 
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let totalScore = 0;
+
+        function displayQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById("questionText").textContent = question.title;
+            document.getElementById("options").innerHTML = "";
+            question.options.forEach(option => {
+                document.getElementById("options").innerHTML += `
+                    <input type="radio" name="answer" value="${option}"> ${option} <br>
+                `;
+            });
+            document.getElementById("feedback").textContent = "";
+            document.getElementById("nextBtn").classList.add("hidden");
+        }
+
+        document.getElementById("submitBtn").addEventListener("click", function() {
+            const selected = document.querySelector('input[name="answer"]:checked');
+            if (!selected) {
+                alert("Please select an option.");
+                return;
+            }
+            const selectedAnswer = selected.value;
+            const correctAnswer = questions[currentQuestionIndex].correct;
+
+            if (selectedAnswer === correctAnswer) {
+                document.getElementById("feedback").textContent = "Correct!";
+                document.getElementById("feedback").classList.add("correct");
+                totalScore += questions[currentQuestionIndex].score;
+            } else {
+                document.getElementById("feedback").textContent = `Incorrect! Correct answer: ${correctAnswer}`;
+                document.getElementById("feedback").classList.add("incorrect");
+            }
+
+            document.querySelectorAll('input[name="answer"]').forEach(input => input.disabled = true);
+            document.getElementById("submitBtn").classList.add("hidden");
+            document.getElementById("nextBtn").classList.remove("hidden");
+        });
+
+        document.getElementById("nextBtn").addEventListener("click", function() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+                document.getElementById("submitBtn").classList.remove("hidden");
+            } else {
+                document.getElementById("scoreDisplay").textContent = `Quiz completed! Your score: ${totalScore}`;
+                document.getElementById("nextBtn").classList.add("hidden");
+                document.getElementById("restartBtn").classList.remove("hidden");
+            }
+        });
+
+        document.getElementById("restartBtn").addEventListener("click", function() {
+            currentQuestionIndex = 0;
+            totalScore = 0;
+            document.getElementById("scoreDisplay").textContent = "";
+            document.getElementById("restartBtn").classList.add("hidden");
+            displayQuestion();
+            document.getElementById("submitBtn").classList.remove("hidden");
+        });
+
+        displayQuestion();
+    </script>
+</body>
+</html>
