@@ -1,0 +1,358 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, ini al-scale=1.0"> 
+    < tle>Discussion App - D1</ tle> 
+    <style> 
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: Arial, sans-serif; 
+        } 
+         
+        body { 
+            display: flex; 
+            height: 100vh; 
+            background-color: #5e5959; 
+        } 
+         
+        .le-pane { 
+            width: 30%; 
+            background-color: #baacac; 
+            border-right: 1px solid #ddd; 
+                                                                                                                                                                                                         
+            overflow-y: auto; 
+            padding: 20px; 
+        } 
+         
+        .right-pane { 
+            width: 70%; 
+            padding: 20px; 
+            background-color: #dcc9c9; 
+            display: flex; 
+            flex-direc on: column; 
+        } 
+         
+        h1 { 
+            color: #333; 
+            margin-bo om: 20px; 
+            font-size: 24px; 
+        } 
+         
+        .ques on-list { 
+            list-style: none; 
+        } 
+         
+        .ques on-item { 
+            padding: 15px; 
+            border-bo om: 1px solid #eee; 
+            cursor: pointer; 
+            transi on: background-color 0.2s; 
+        } 
+         
+                                                                                                                                                                                                         
+        .ques on-item:hover { 
+            background-color: #f0f0f0; 
+        } 
+         
+        .ques on-item.ac ve { 
+            background-color: #e0e0e0; 
+            font-weight: bold; 
+        } 
+         
+        .ques on-text { 
+            font-size: 16px; 
+            margin-bo om: 5px; 
+        } 
+         
+        .ques on-meta { 
+            font-size: 12px; 
+            color: #777; 
+        } 
+         
+        .response-list { 
+            flex-grow: 1; 
+            overflow-y: auto; 
+            margin-bo om: 20px; 
+        } 
+         
+        .response-item { 
+            background-color: #fff; 
+            padding: 15px; 
+            margin-bo om: 15px; 
+                                                                                                                                                                                                         
+            border-radius: 5px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+        } 
+         
+        .response-text { 
+            margin-bo om: 10px; 
+        } 
+         
+        .response-meta { 
+            font-size: 12px; 
+            color: #777; 
+            text-align: right; 
+        } 
+         
+        .new-ques on-form, .new-response-form { 
+            background-color: #fff; 
+            padding: 20px; 
+            border-radius: 5px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+            margin-bo om: 20px; 
+        } 
+         
+        .form-group { 
+            margin-bo om: 15px; 
+        } 
+         
+        label { 
+            display: block; 
+            margin-bo om: 5px; 
+                                                                                                                                                                                                         
+            font-weight: bold; 
+            color: #555; 
+        } 
+         
+        input[type="text"], textarea { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 14px; 
+        } 
+         
+        textarea { 
+            min-height: 100px; 
+            resize: ver cal; 
+        } 
+         
+        bu on { 
+            background-color: #4CAF50; 
+            color: white; 
+            border: none; 
+            padding: 10px 15px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            transi on: background-color 0.3s; 
+        } 
+         
+        bu on:hover { 
+                                                                                                                                                                                                         
+            background-color: #45a049; 
+        } 
+         
+        .no-responses { 
+            color: #777; 
+            font-style: italic; 
+            text-align: center; 
+            padding: 40px; 
+        } 
+         
+        .no-ques ons { 
+            color: #777; 
+            font-style: italic; 
+            text-align: center; 
+            padding: 40px; 
+        } 
+         
+        .hidden { 
+            display: none; 
+        } 
+    </style> 
+</head> 
+<body> 
+    <div class="le-pane"> 
+        <h1>Ques ons</h1> 
+        <ul class="ques on-list" id="ques onList"> 
+            <!-- Ques ons will be added here dynamically --> 
+            <div class="no-ques ons">No ques ons yet. Add your first ques on!</div> 
+        </ul> 
+                                                                                                                                                                                                         
+    </div> 
+     
+    <div class="right-pane"> 
+        <div id="responseContainer" class="hidden"> 
+            <div class="response-list" id="responseList"> 
+                <!-- Responses will be added here dynamically --> 
+            </div> 
+            <div class="new-response-form"> 
+                <h2>Add a Response</h2> 
+                <div class="form-group"> 
+                    <label for="responseAuthor">Your Name:</label> 
+                    <input type="text" id="responseAuthor" placeholder="Enter your name"> 
+                </div> 
+                <div class="form-group"> 
+                    <label for="responseText">Your Response:</label> 
+                    <textarea id="responseText" placeholder="Enter your response here"></textarea> 
+                </div> 
+                <bu on id="submitResponse">Submit Response</bu on> 
+            </div> 
+        </div> 
+         
+        <div id="newQues onContainer"> 
+            <div class="new-ques on-form"> 
+                <h2>Add a New Ques on</h2> 
+                <div class="form-group"> 
+                    <label for="ques onAuthor">Your Name:</label> 
+                    <input type="text" id="ques onAuthor" placeholder="Enter your name"> 
+                </div> 
+                <div class="form-group"> 
+                                                                                                                                                                                                         
+                    <label for="ques onText">Your Ques on:</label> 
+                    <textarea id="ques onText" placeholder="Enter your ques on here"></textarea> 
+                </div> 
+                <bu on id="submitQues on">Submit Ques on</bu on> 
+            </div> 
+        </div> 
+    </div> 
+ 
+    <script> 
+        
+        let ques ons = []; 
+        
+        const ques onList = document.getElementById('ques onList'); 
+        const responseList = document.getElementById('responseList'); 
+        const responseContainer = document.getElementById('responseContainer'); 
+        const newQues onContainer = document.getElementById('newQues onContainer'); 
+        const submitQues onBtn = document.getElementById('submitQues on'); 
+        const submitResponseBtn = document.getElementById('submitResponse'); 
+         
+        let currentQues onId = null; 
+         
+        func on init() { 
+            renderQues ons(); 
+             
+            // Event listeners 
+            submitQues onBtn.addEventListener('click', addQues on); 
+            submitResponseBtn.addEventListener('click', addResponse); 
+        } 
+         
+                                                                                                                                                                                                         
+        func on renderQues ons() { 
+            ques onList.innerHTML = ''; 
+             
+            if (ques ons.length === 0) { 
+                ques onList.innerHTML = '<div class="no-ques ons">No ques ons yet. Add your first 
+ques on!</div>'; 
+                return; 
+            } 
+             
+            ques ons.forEach(ques on => { 
+                const ques onItem = document.createElement('li'); 
+                ques onItem.className = 'ques on-item'; 
+                if (ques on.id === currentQues onId) { 
+                    ques onItem.classList.add('ac ve'); 
+                } 
+                 
+                ques onItem.innerHTML = ` 
+                    <div class="ques on-text">${ques on.text}</div> 
+                    <div class="ques on-meta">Asked by ${ques on.author} on ${ques on.date}</div> 
+                `; 
+                 
+                ques onItem.addEventListener('click', () => { 
+                    currentQues onId = ques on.id; 
+                    renderQues ons(); 
+                    renderResponses(); 
+                    responseContainer.classList.remove('hidden'); 
+                    newQues onContainer.classList.add('hidden'); 
+                }); 
+                 
+                                                                                                                                                                                                         
+                ques onList.appendChild(ques onItem); 
+            }); 
+        } 
+         
+        func on renderResponses() { 
+            responseList.innerHTML = ''; 
+             
+            const ques on = ques ons.find(q => q.id === currentQues onId); 
+             
+            if (!ques on || ques on.responses.length === 0) { 
+                responseList.innerHTML = '<div class="no-responses">No responses yet. Be the first to 
+respond!</div>'; 
+                return; 
+            } 
+             
+            ques on.responses.forEach(response => { 
+                const responseItem = document.createElement('div'); 
+                responseItem.className = 'response-item'; 
+                 
+                responseItem.innerHTML = ` 
+                    <div class="response-text">${response.text}</div> 
+                    <div class="response-meta">Answered by ${response.author} on ${response.date}</div> 
+                `; 
+                 
+                responseList.appendChild(responseItem); 
+            }); 
+        } 
+         
+        func on addQues on() { 
+                                                                                                                                                                                                         
+            const author = document.getElementById('ques onAuthor').value; 
+            const text = document.getElementById('ques onText').value; 
+             
+            if (!author || !text) { 
+                alert('Please fill in all fields'); 
+                return; 
+            } 
+             
+            const newQues on = { 
+                id: ques ons.length > 0 ? Math.max(...ques ons.map(q => q.id)) + 1 : 1, 
+                text: text, 
+                author: author, 
+                date: new Date().toISOString().split('T')[0], 
+                responses: [] 
+            }; 
+             
+            ques ons.push(newQues on); 
+            
+            document.getElementById('ques onAuthor').value = ''; 
+            document.getElementById('ques onText').value = ''; 
+             
+            renderQues ons(); 
+        } 
+         
+        func on addResponse() { 
+            const author = document.getElementById('responseAuthor').value; 
+            const text = document.getElementById('responseText').value; 
+             
+            if (!author || !text) { 
+                                                                                                                                                                                                         
+                alert('Please fill in all fields'); 
+                return; 
+            } 
+             
+            const ques onIndex = ques ons.findIndex(q => q.id === currentQues onId); 
+             
+            if (ques onIndex === -1) { 
+                alert('Ques on not found'); 
+                return; 
+            } 
+             
+            const newResponse = { 
+                id: ques ons[ques onIndex].responses.length > 0  
+                    ? Math.max(...ques ons[ques onIndex].responses.map(r => r.id)) + 1  
+                    : 1, 
+                text: text, 
+                author: author, 
+                date: new Date().toISOString().split('T')[0] 
+            }; 
+             
+            ques ons[ques onIndex].responses.push(newResponse); 
+             
+            document.getElementById('responseAuthor').value = ''; 
+            document.getElementById('responseText').value = ''; 
+             
+            renderResponses(); 
+        } 
+         
+        document.addEventListener('DOMContentLoaded', init); 
+                                                                                                                                                                                                         
+    </script> 
+</body> 
+</html> 
