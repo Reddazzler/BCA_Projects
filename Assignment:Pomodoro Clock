@@ -1,0 +1,155 @@
+<!DOCTYPE html> 
+<head> 
+    < tle>pomoclock</ tle> 
+    <style> 
+        .main-container{ 
+            height: 350px; 
+            width: 350px; 
+            background-color: coral; 
+            border-radius: 15px; 
+            border: 2px solid black; 
+            posi on: fixed; 
+            top: 30%; 
+            le : 40%; 
+            padding: 10px; 
+        } 
+        .TIMERS{ 
+            height: 30px; 
+            width: 90%; 
+            background-color: aliceblue; 
+            padding: 15PX; 
+            margin-bo om: 10px; 
+            display: flex; 
+            align-items: center; 
+            jus fy-content: center; 
+            font-size: x-large; 
+                                                                                                                                                                                                         
+            border-radius: 5px; 
+        } 
+        . mer{ 
+            margin: 10px; 
+        } 
+        .bu ons{ 
+            height: 40px; 
+            width: 98%; 
+            display: flex; 
+            jus fy-content: space-around; 
+            align-items:center; 
+        } 
+        .bu on{ 
+            background-color:palevioletred; 
+            border: none; 
+            color: white; 
+            font-weight: bold; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            height: 25px; 
+            width: 50px; 
+        } 
+       #laps{ 
+        background-color: white; 
+        height: 90px; 
+        overflow:auto; 
+        width: 90%; 
+        list-style: none; 
+        border-radius: 5px; 
+                                                                                                                                                                                                         
+       }  
+       li{ 
+        background-color:gray; 
+        height: 25px; 
+        width: 90%; 
+        margin: 5px; 
+        border-radius: 5px; 
+       } 
+    </style> 
+</head> 
+<body> 
+    <div class="main-container"> 
+        <h1> STOPWATCH TIMER</h1> 
+        <DIV class="TIMERS">  
+            <SPAN CLASS="mer" ID="minutes">00</SPAN> 
+            <SPAN CLASS="mer" ID="second">00</SPAN> 
+            <SPAN CLASS="mer" ID="milisec">00</SPAN> 
+        </DIV> 
+        <div class="bu ons"> 
+            <bu on class="bu on" id="start">Start</bu on> 
+            <bu on  class="bu on" id="skip">Lap</bu on> 
+            <bu on class="bu on" id="pause">Pause</bu on> 
+            <bu on class="bu on" id="reset">Reset</bu on> 
+        </div> 
+        <h2>lap mer</h2> 
+        <ol id="laps"></ol> 
+    </div> 
+    <script> 
+        let minutes=document.getElementById("minutes"); 
+                                                                                                                                                                                                         
+        let seconds=document.getElementById("second"); 
+        let milisecs=document.getElementById("milisec"); 
+        let ol=document.getElementById("laps"); 
+        let start=document.getElementById("start"); 
+        let lap=document.getElementById("skip"); 
+        let pause=document.getElementById("pause"); 
+        let reset=document.getElementById("reset"); 
+        let minute=0; 
+        let second=0; 
+        let milisec=0; 
+        let interval; 
+        start.addEventListener("click",star mer); 
+        lap.addEventListener("click",lapmer); 
+        pause.addEventListener("click",pausemer); 
+        reset.addEventListener("click",rese mer); 
+        func on star mer(){ 
+        interval=setInterval(updatemer,10) 
+        start.disabled=true; 
+        } 
+        func on lapmer(){ 
+        addToLapList(); 
+        start.disabled = false; 
+          } 
+        func on pausemer(){ 
+         clearInterval(interval); 
+        start.disabled=false; 
+       } 
+        func on rese mer(){ 
+        clearInterval(interval); 
+                                                                                                                                                                                                         
+        resetTimerData(); 
+        start.disabled = false; 
+      } 
+        func on updatemer(){ 
+          milisec++; 
+           if(milisec===100){ 
+          milisec=0; 
+          second++; 
+           if(second===60){ 
+          second=0; 
+           minute++; 
+            } 
+        } 
+        displaymer() 
+      } 
+        func on displaymer(){ 
+           milisecs.textContent=padme(milisec); 
+           seconds.textContent=padme(second); 
+           minutes.textContent=padme(minute); 
+         } 
+         func on padme( me){ 
+         return me.toString().padStart(2,'0'); 
+         } 
+          func on resetTimerData(){ 
+           minute = 0; 
+           second = 0; 
+           milisec = 0; 
+            displaymer(); 
+          } 
+                                                                                                                                                                                                         
+          func on addToLapList(){ 
+            const lapTime = `${padme(minute)}:${padme(second)}:${padme(milisec)}`; 
+              const li = document.createElement('li'); 
+               li.innerHTML = `<span>Lap ${ol.childElementCount + 1}: </span>${lapTime}`; 
+                ol.appendChild(li); 
+              } 
+    </script> 
+</body> 
+</html>
