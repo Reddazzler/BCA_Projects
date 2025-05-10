@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Chat App</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .chat-container {
+            display: flex;
+            width: 80%;
+            margin: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .contacts {
+            width: 30%;
+            background: #f4f4f4;
+            padding: 10px;
+            border-right: 1px solid #ccc;
+        }
+        .contacts div {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+        }
+        .contacts div:hover {
+            background: #ddd;
+        }
+        .chat-window {
+            width: 70%;
+            padding: 10px;
+        }
+        .messages {
+            height: 300px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const chatData = [
+            {
+                name: "Alice",
+                messages: ["Hi there!", "How are you?", "Are you working on React today?"]
+            },
+            {
+                name: "Bob",
+                messages: ["Hello!", "Let's catch up soon.", "Did you check the latest updates?"]
+            },
+            {
+                name: "Charlie",
+                messages: ["Hey!", "Just finished a project.", "Let's discuss tomorrow."]
+            }
+        ];
+
+        const ChatApp = () => {
+            const [selectedUser, setSelectedUser] = React.useState(chatData[0]);
+
+            return (
+                <div className="chat-container">
+                    <div className="contacts">
+                        {chatData.map((user, index) => (
+                            <div key={index} onClick={() => setSelectedUser(user)}>
+                                {user.name}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="chat-window">
+                        <h2>Chat with {selectedUser.name}</h2>
+                        <div className="messages">
+                            {selectedUser.messages.map((msg, index) => (
+                                <p key={index}>{msg}</p>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<ChatApp />);
+    </script>
+
+</body>
+</html>
