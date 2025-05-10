@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Search App</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        input {
+            margin-bottom: 15px;
+            padding: 8px;
+            width: 200px;
+        }
+        table {
+            width: 60%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const employees = [
+            { name: "Alice Johnson", location: "New York" },
+            { name: "Bob Smith", location: "San Francisco" },
+            { name: "Charlie Brown", location: "Chicago" },
+            { name: "Diana Rose", location: "Los Angeles" },
+            { name: "Ethan Hunt", location: "Seattle" }
+        ];
+
+        const EmployeeSearchApp = () => {
+            const [search, setSearch] = React.useState("");
+
+            const filteredEmployees = employees.filter(emp =>
+                emp.name.toLowerCase().includes(search.toLowerCase()) ||
+                emp.location.toLowerCase().includes(search.toLowerCase())
+            );
+
+            return (
+                <div>
+                    <h2>Employee Search</h2>
+                    <input
+                        type="text"
+                        placeholder="Search by name or location..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredEmployees.map((emp, index) => (
+                                <tr key={index}>
+                                    <td>{emp.name}</td>
+                                    <td>{emp.location}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<EmployeeSearchApp />);
+    </script>
+
+</body>
+</html>
